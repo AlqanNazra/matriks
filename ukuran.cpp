@@ -21,27 +21,27 @@ void printMatrix(int **matrix, int rows, int cols) {
     }
 }
 
-int main() {
-    int rows, cols;
+// int main() {
+//     int rows, cols;
 
-    printf("Masukkan jumlah baris matriks: ");
-    scanf("%d", &rows);
-    printf("Masukkan jumlah kolom matriks: ");
-    scanf("%d", &cols);
+//     printf("Masukkan jumlah baris matriks: ");
+//     scanf("%d", &rows);
+//     printf("Masukkan jumlah kolom matriks: ");
+//     scanf("%d", &cols);
 
-    int **matrix = (int **)malloc(rows * sizeof(int *));
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = (int *)malloc(cols * sizeof(int));
-    }
+//     int **matrix = (int **)malloc(rows * sizeof(int *));
+//     for (int i = 0; i < rows; i++) {
+//         matrix[i] = (int *)malloc(cols * sizeof(int));
+//     }
 
-    inputMatrix(matrix, rows, cols);
+//     inputMatrix(matrix, rows, cols);
 
-    printMatrix(matrix, rows, cols);
+//     printMatrix(matrix, rows, cols);
 
-    for (int i = 0; i < rows; i++) {
-        free(matrix[i]);
-    }
-    free(matrix);
+//     for (int i = 0; i < rows; i++) {
+//         free(matrix[i]);
+//     }
+//     free(matrix);
 
-    return 0;
-}
+//     return 0;
+// }

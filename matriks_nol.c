@@ -33,19 +33,19 @@ void freeMatrix(int **matrix, int rows) {
     free(matrix);
 }
 
-int main() {
-    int rows, cols;
+// int main() {
+//     int rows, cols;
 
-    printf("Masukkan jumlah baris matriks: ");
-    scanf("%d", &rows);
-    printf("Masukkan jumlah kolom matriks: ");
-    scanf("%d", &cols);
+//     printf("Masukkan jumlah baris matriks: ");
+//     scanf("%d", &rows);
+//     printf("Masukkan jumlah kolom matriks: ");
+//     scanf("%d", &cols);
 
-    int **zeroMatrix = createZeroMatrix(rows, cols);
+//     int **zeroMatrix = createZeroMatrix(rows, cols);
 
-    printMatrix(zeroMatrix, rows, cols);
+//     printMatrix(zeroMatrix, rows, cols);
 
-    freeMatrix(zeroMatrix, rows);
+//     freeMatrix(zeroMatrix, rows);
 
-    return 0;
-}
+//     return 0;
+// }
