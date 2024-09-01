@@ -149,8 +149,8 @@ int main() {
 
 // Fungsi untuk memasukkan elemen matriks
 void inputMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= cols; j++) {
             printf("Elemen [%d][%d]: ", i, j);
             scanf("%d", &matrix[i][j]);
         }
@@ -167,42 +167,57 @@ void printMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]) {
     }
 }
 
-// Fungsi untuk menghitung invers matriks 2x2
+/**
+ * Author : Alvito Novandi
+ * Fungsi inversMatriks
+ * --------------------
+ * Menghitung invers dari matriks 2x2.
+ *
+ * parameter matriks Matriks 2x2 yang akan dihitung inversnya.
+ * parameter invers Matriks hasil invers.
+ *
+ * return void
+ */
 void inverseMatrix() {
-    int matrix[2][2];
+    int matrix[3][3];
     float determinant;
-    float inverse[2][2];
+    float inverse[3][3];
 
     printf("\nMasukkan elemen matriks 2x2:\n");
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
+    for (int i = 1; i <= 2; i++) {
+        for (int j = 1; j <= 2; j++) {
             printf("Elemen [%d][%d]: ", i, j);
             scanf("%d", &matrix[i][j]);
         }
     }
 
     // Menghitung determinan
-    determinant = (float)(matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
-
-    if (determinant == 0) {
-        printf("\nMatriks tidak memiliki invers karena determinan bernilai 0.\n");
-        return;
+    determinant = (matrix[1][1] * matrix[2][2])-(matrix[1][2] * matrix[2][1]);
+    if (determinant == 0)
+    {
+        printf("Matriks tidak memilikik invers");
     }
+    
+    else
+    {
+        // Menghitung invers
+        inverse[1][1] = matrix[2][2] / determinant;
+        inverse[1][2] = -matrix[1][2] / determinant;
+        inverse[2][1] = -matrix[2][1] / determinant;
+        inverse[2][2] = matrix[1][1] / determinant;
 
-    // Menghitung invers
-    inverse[0][0] = matrix[1][1] / determinant;
-    inverse[0][1] = -matrix[0][1] / determinant;
-    inverse[1][0] = -matrix[1][0] / determinant;
-    inverse[1][1] = matrix[0][0] / determinant;
-
-    printf("\nInvers Matriks:\n");
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            printf("%.2f\t", inverse[i][j]);
+        printf("\nInvers Matriks:\n");
+        for (int i = 1; i <= 2; i++) 
+        {
+            for (int j = 1; j <= 2; j++) 
+            {
+                printf(" %f ", inverse[i][j]);
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 }
+    
 
 // Fungsi untuk perkalian dua matriks
 void multiplyMatrices() {
@@ -250,7 +265,16 @@ void multiplyMatrices() {
     printMatrix(rows1, cols2, result);
 }
 
-// Fungsi untuk menghitung trace matriks
+/**
+ * Fungsi traceMatriks
+ * -------------------
+ * Menghitung jumlah elemen diagonal utama dari sebuah matriks persegi.
+ *
+ * parameter matriks Matriks persegi yang ingin dihitung trace-nya.
+ * parameter n Ukuran (baris/kolom) dari matriks persegi.
+ *
+ * return int Trace dari matriks.
+ */
 void traceMatrix() {
     int size;
     int matrix[MAX_SIZE][MAX_SIZE];
@@ -262,7 +286,7 @@ void traceMatrix() {
     printf("\nMasukkan elemen matriks:\n");
     inputMatrix(size, size, matrix);
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 1; i <= size; i++) {
         trace += matrix[i][i];
     }
 
