@@ -1,68 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ROWS 100
-#define COLS 100
+#define MAX_SIZE 100
 
-// Function declarations
+// Deklarasi Fungsi
 void inverseMatrix();
 void multiplyMatrices();
 void traceMatrix();
-int** createZeroMatrix(int rows, int cols);
-void scalarMultiply(int matrix[ROWS][COLS], int scalar, int result[ROWS][COLS]);
-void tambah_tambah(int matrik1[100][100], int matriks2[100][100], int panjang, int lebar, int hasil[100][100]);
-void tambah_kurang(int matrik1[100][100], int matriks2[100][100], int panjang, int lebar, int hasil[100][100]);
-void invers(int matriks[100][100], int panjang, int lebar, int transpose[100][100]);
-void identitas(int matriks[100][100], int panjang, int lebar);
+void scalarMultiply(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE], int scalar, int result[MAX_SIZE][MAX_SIZE]);
+void matrixAddition(int rows, int cols, int matrix1[MAX_SIZE][MAX_SIZE], int matrix2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]);
+void matrixSubtraction(int rows, int cols, int matrix1[MAX_SIZE][MAX_SIZE], int matrix2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]);
+void transpose(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]);
+void identityMatrix(int size, int result[MAX_SIZE][MAX_SIZE]);
+void inputMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]);
+void printMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]);
 
 int main() {
     int choice;
-    int A[ROWS][COLS], B[ROWS][COLS];
-    int hasil[ROWS][COLS];
-    int baris1, kolom1, baris2, kolom2, scalar;
-
-    printf("PROGRAM MATRIKS\n");
-    printf("Syarat: Jumlah Kolom matriks pertama harus sama dengan jumlah baris matriks kedua\n");
-
-    printf("MATRIKS PERTAMA\n");
-    printf("\nMasukkan Jumlah Baris: ");
-    scanf("%d", &baris1);
-    printf("Masukkan Jumlah Kolom: ");
-    scanf("%d", &kolom1);
-
-    printf("Masukkan Nilai Matriks Pertama\n");
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom1; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &A[i][j]);
-        }
-    }
-
-    printf("MATRIKS KEDUA\n");
-    printf("\nMasukkan Jumlah Baris: ");
-    scanf("%d", &baris2);
-    printf("Masukkan Jumlah Kolom: ");
-    scanf("%d", &kolom2);
-
-    while (kolom1 != baris2) {
-        printf("KOLOM MATRIKS PERTAMA TIDAK SAMA DENGAN BARIS MATRIKS KEDUA!!!\n");
-        printf("\nMasukkan Jumlah Baris: ");
-        scanf("%d", &baris2);
-        printf("Masukkan Jumlah Kolom: ");
-        scanf("%d", &kolom2);
-    }
-
-    printf("Masukkan Nilai Matriks Kedua\n");
-    for (int i = 1; i <= baris2; i++) {
-        for (int j = 1; j <= kolom2; j++) {
-            printf("B[%d][%d] = ", i, j);
-            scanf("%d", &B[i][j]);
-        }
-    }
 
     do {
         printf("\n===== MENU =====\n");
-        printf("1. Invers Matriks\n");
+        printf("1. Invers Matriks (2x2)\n");
         printf("2. Perkalian Matriks\n");
         printf("3. Trace Matriks\n");
         printf("4. Perkalian Skalar\n");
@@ -84,44 +42,100 @@ int main() {
             case 3:
                 traceMatrix();
                 break;
-            case 4:
+            case 4: {
+                int rows, cols, scalar;
+                int matrix[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+
+                printf("\nMasukkan Jumlah Baris Matriks: ");
+                scanf("%d", &rows);
+                printf("Masukkan Jumlah Kolom Matriks: ");
+                scanf("%d", &cols);
+
+                printf("\nMasukkan elemen matriks:\n");
+                inputMatrix(rows, cols, matrix);
+
                 printf("Masukkan skalar: ");
                 scanf("%d", &scalar);
-                scalarMultiply(A, scalar, hasil);
-                printf("Hasil Perkalian Skalar:\n");
-                for (int i = 1; i <= baris1; i++) {
-                    for (int j = 1; j <= kolom1; j++) {
-                        printf(" %d ", hasil[i][j]);
-                    }
-                    printf("\n");
-                }
+
+                scalarMultiply(rows, cols, matrix, scalar, result);
+
+                printf("\nHasil Perkalian Skalar:\n");
+                printMatrix(rows, cols, result);
                 break;
-            case 5:
-                tambah_tambah(A, B, baris1, kolom1, hasil);
-                printf("Hasil Penjumlahan Matriks:\n");
-                for (int i = 1; i <= baris1; i++) {
-                    for (int j = 1; j <= kolom1; j++) {
-                        printf(" %d ", hasil[i][j]);
-                    }
-                    printf("\n");
-                }
+            }
+            case 5: {
+                int rows, cols;
+                int matrix1[MAX_SIZE][MAX_SIZE], matrix2[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+
+                printf("\nMasukkan Jumlah Baris Matriks: ");
+                scanf("%d", &rows);
+                printf("Masukkan Jumlah Kolom Matriks: ");
+                scanf("%d", &cols);
+
+                printf("\nMasukkan elemen matriks pertama:\n");
+                inputMatrix(rows, cols, matrix1);
+
+                printf("\nMasukkan elemen matriks kedua:\n");
+                inputMatrix(rows, cols, matrix2);
+
+                matrixAddition(rows, cols, matrix1, matrix2, result);
+
+                printf("\nHasil Penjumlahan Matriks:\n");
+                printMatrix(rows, cols, result);
                 break;
-            case 6:
-                tambah_kurang(A, B, baris1, kolom1, hasil);
-                printf("Hasil Pengurangan Matriks:\n");
-                for (int i = 1; i <= baris1; i++) {
-                    for (int j = 1; j <= kolom1; j++) {
-                        printf(" %d ", hasil[i][j]);
-                    }
-                    printf("\n");
-                }
+            }
+            case 6: {
+                int rows, cols;
+                int matrix1[MAX_SIZE][MAX_SIZE], matrix2[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+
+                printf("\nMasukkan Jumlah Baris Matriks: ");
+                scanf("%d", &rows);
+                printf("Masukkan Jumlah Kolom Matriks: ");
+                scanf("%d", &cols);
+
+                printf("\nMasukkan elemen matriks pertama:\n");
+                inputMatrix(rows, cols, matrix1);
+
+                printf("\nMasukkan elemen matriks kedua:\n");
+                inputMatrix(rows, cols, matrix2);
+
+                matrixSubtraction(rows, cols, matrix1, matrix2, result);
+
+                printf("\nHasil Pengurangan Matriks:\n");
+                printMatrix(rows, cols, result);
                 break;
-            case 7:
-                invers(A, baris1, kolom1, hasil);
+            }
+            case 7: {
+                int rows, cols;
+                int matrix[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+
+                printf("\nMasukkan Jumlah Baris Matriks: ");
+                scanf("%d", &rows);
+                printf("Masukkan Jumlah Kolom Matriks: ");
+                scanf("%d", &cols);
+
+                printf("\nMasukkan elemen matriks:\n");
+                inputMatrix(rows, cols, matrix);
+
+                transpose(rows, cols, matrix, result);
+
+                printf("\nHasil Transpose Matriks:\n");
+                printMatrix(cols, rows, result); // baris dan kolom tertukar
                 break;
-            case 8:
-                identitas(A, baris1, kolom1);
+            }
+            case 8: {
+                int size;
+                int result[MAX_SIZE][MAX_SIZE];
+
+                printf("\nMasukkan ukuran matriks identitas (n untuk matriks nxn): ");
+                scanf("%d", &size);
+
+                identityMatrix(size, result);
+
+                printf("\nMatriks Identitas:\n");
+                printMatrix(size, size, result);
                 break;
+            }
             case 0:
                 printf("Keluar dari program.\n");
                 break;
@@ -133,198 +147,170 @@ int main() {
     return 0;
 }
 
-// Function definitions
-
-void inverseMatrix() {
-    int kolom1 = 2, baris1 = 2; // Invers matriks hanya untuk 2x2
-    int A[baris1 + 1][kolom1 + 1];
-    int temp;
-    float B[baris1 + 1][kolom1 + 1];
-    float det;
-
-    printf("Masukkan Nilai Matriks 2x2\n");
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom1; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &A[i][j]);
-        }
-    }
-
-    det = (A[1][1] * A[2][2]) - (A[1][2] * A[2][1]);
-    if (det == 0) {
-        printf("Matriks tidak memiliki invers\n");
-    } else {
-        temp = A[1][1];
-        A[1][1] = A[2][2];
-        A[2][2] = temp;
-
-        A[1][2] = -A[1][2];
-        A[2][1] = -A[2][1];
-        for (int i = 1; i <= kolom1; i++) {
-            for (int j = 1; j <= kolom1; j++) {
-                B[i][j] = 1/det * A[i][j]; 
-            }
-        }
-        printf("Invers Matriks:\n");
-        for (int i = 1; i <= baris1; i++) {
-            for (int j = 1; j <= kolom1; j++) {
-                printf(" %f ", B[i][j]);
-            }
-            printf("\n");
+// Fungsi untuk memasukkan elemen matriks
+void inputMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("Elemen [%d][%d]: ", i, j);
+            scanf("%d", &matrix[i][j]);
         }
     }
 }
 
-void multiplyMatrices() {
-    int kolom1, baris1, kolom2, baris2;
-
-    printf("\nMasukkan Jumlah Baris Matriks Pertama: ");
-    scanf("%d", &baris1);
-    printf("Masukkan Jumlah Kolom Matriks Pertama: ");
-    scanf("%d", &kolom1);
-
-    int A[baris1 + 1][kolom1 + 1];
-    printf("Masukkan Nilai Matriks Pertama\n");
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom1; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &A[i][j]);
-        }
-    }
-
-    do {
-        printf("\nMasukkan Jumlah Baris Matriks Kedua: ");
-        scanf("%d", &baris2);
-        printf("Masukkan Jumlah Kolom Matriks Kedua: ");
-        scanf("%d", &kolom2);
-
-        if (kolom1 != baris2) {
-            printf("KOLOM MATRIKS PERTAMA TIDAK SAMA DENGAN BARIS MATRIKS KEDUA!!!\n");
-        }
-    } while (kolom1 != baris2);
-
-    int B[baris2 + 1][kolom2 + 1];
-    printf("Masukkan Nilai Matriks Kedua\n");
-    for (int i = 1; i <= baris2; i++) {
-        for (int j = 1; j <= kolom2; j++) {
-            printf("B[%d][%d] = ", i, j);
-            scanf("%d", &B[i][j]);            
-        }
-    }
-
-    int C[baris1 + 1][kolom2 + 1];
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom2; j++) {
-            C[i][j] = 0;
-            for (int k = 1; k <= baris2; k++) {
-                C[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-
-    printf("Hasil Perkalian Matriks Pertama dan Kedua:\n");
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom2; j++) {
-            printf(" %d ", C[i][j]);
+// Fungsi untuk mencetak matriks
+void printMatrix(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%d\t", matrix[i][j]);
         }
         printf("\n");
     }
 }
 
-void traceMatrix() {
-    int kolom1, baris1, trace = 0;
+// Fungsi untuk menghitung invers matriks 2x2
+void inverseMatrix() {
+    int matrix[2][2];
+    float determinant;
+    float inverse[2][2];
 
-    printf("\nMasukkan Jumlah Baris Matriks: ");
-    scanf("%d", &baris1);
-    printf("Masukkan Jumlah Kolom Matriks: ");
-    scanf("%d", &kolom1);
+    printf("\nMasukkan elemen matriks 2x2:\n");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            printf("Elemen [%d][%d]: ", i, j);
+            scanf("%d", &matrix[i][j]);
+        }
+    }
 
-    if (baris1 != kolom1) {
-        printf("Matriks Bukan Persegi\nTrace Matriks Tidak Terdefinisi\n");
+    // Menghitung determinan
+    determinant = (float)(matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+
+    if (determinant == 0) {
+        printf("\nMatriks tidak memiliki invers karena determinan bernilai 0.\n");
         return;
     }
 
-    int A[baris1 + 1][kolom1 + 1];
-    printf("Masukkan Nilai Matriks\n");
-    for (int i = 1; i <= baris1; i++) {
-        for (int j = 1; j <= kolom1; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &A[i][j]);
+    // Menghitung invers
+    inverse[0][0] = matrix[1][1] / determinant;
+    inverse[0][1] = -matrix[0][1] / determinant;
+    inverse[1][0] = -matrix[1][0] / determinant;
+    inverse[1][1] = matrix[0][0] / determinant;
+
+    printf("\nInvers Matriks:\n");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            printf("%.2f\t", inverse[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// Fungsi untuk perkalian dua matriks
+void multiplyMatrices() {
+    int rows1, cols1, rows2, cols2;
+    int matrix1[MAX_SIZE][MAX_SIZE], matrix2[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+
+    printf("\nMasukkan Jumlah Baris Matriks Pertama: ");
+    scanf("%d", &rows1);
+    printf("Masukkan Jumlah Kolom Matriks Pertama: ");
+    scanf("%d", &cols1);
+
+    printf("\nMasukkan elemen matriks pertama:\n");
+    inputMatrix(rows1, cols1, matrix1);
+
+    printf("\nMasukkan Jumlah Baris Matriks Kedua: ");
+    scanf("%d", &rows2);
+    printf("Masukkan Jumlah Kolom Matriks Kedua: ");
+    scanf("%d", &cols2);
+
+    if (cols1 != rows2) {
+        printf("\nPerkalian tidak dapat dilakukan karena jumlah kolom matriks pertama tidak sama dengan jumlah baris matriks kedua.\n");
+        return;
+    }
+
+    printf("\nMasukkan elemen matriks kedua:\n");
+    inputMatrix(rows2, cols2, matrix2);
+
+    // Inisialisasi matriks hasil dengan nol
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols2; j++) {
+            result[i][j] = 0;
         }
     }
 
-    for (int i = 1; i <= baris1; i++) {
-        trace += A[i][i];
+    // Perkalian matriks
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols2; j++) {
+            for (int k = 0; k < cols1; k++) {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
     }
 
-    printf("Trace Matriks = %d\n", trace);
+    printf("\nHasil Perkalian Matriks:\n");
+    printMatrix(rows1, cols2, result);
 }
 
-int** createZeroMatrix(int rows, int cols) {
-    int **matrix = (int **)malloc(rows * sizeof(int *));
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = (int *)malloc(cols * sizeof(int));
+// Fungsi untuk menghitung trace matriks
+void traceMatrix() {
+    int size;
+    int matrix[MAX_SIZE][MAX_SIZE];
+    int trace = 0;
+
+    printf("\nMasukkan ukuran matriks persegi (n untuk matriks nxn): ");
+    scanf("%d", &size);
+
+    printf("\nMasukkan elemen matriks:\n");
+    inputMatrix(size, size, matrix);
+
+    for (int i = 0; i < size; i++) {
+        trace += matrix[i][i];
     }
 
+    printf("\nTrace Matriks = %d\n", trace);
+}
+
+// Fungsi untuk perkalian skalar dengan matriks
+void scalarMultiply(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE], int scalar, int result[MAX_SIZE][MAX_SIZE]) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            matrix[i][j] = 0;
-        }
-    }
-
-    return matrix;
-}
-
-void scalarMultiply(int matrix[ROWS][COLS], int scalar, int result[ROWS][COLS]) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
             result[i][j] = matrix[i][j] * scalar;
         }
     }
 }
 
-
-void tambah_tambah(int matrik1[100][100], int matriks2[100][100], int panjang, int lebar, int hasil[100][100]) {
-    for (int i = 0; i < panjang; i++) {
-        for (int j = 0; j < lebar; j++) {
-            hasil[i][j] = matrik1[i][j] + matriks2[i][j];
+// Fungsi untuk penjumlahan dua matriks
+void matrixAddition(int rows, int cols, int matrix1[MAX_SIZE][MAX_SIZE], int matrix2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
         }
     }
 }
 
-void tambah_kurang(int matrik1[100][100], int matriks2[100][100], int panjang, int lebar, int hasil[100][100]) {
-    for (int i = 0; i < panjang; i++) {
-        for (int j = 0; j < lebar; j++) {
-            hasil[i][j] = matrik1[i][j] - matriks2[i][j];
+// Fungsi untuk pengurangan dua matriks
+void matrixSubtraction(int rows, int cols, int matrix1[MAX_SIZE][MAX_SIZE], int matrix2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = matrix1[i][j] - matrix2[i][j];
         }
     }
 }
 
-void invers(int matriks[100][100], int panjang, int lebar, int transpose[100][100]) {
-    for (int i = 0; i < panjang; i++) {
-        for (int j = 0; j < lebar; j++) {
-            transpose[j][i] = matriks[i][j];
+// Fungsi untuk transpose matriks
+void transpose(int rows, int cols, int matrix[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = matrix[i][j];
         }
-    }
-    printf("Hasil Transpose:\n");
-    for (int i = 0; i < lebar; i++) {
-        for (int j = 0; j < panjang; j++) {
-            printf("%d\t", transpose[i][j]);
-        }
-        printf("\n");
     }
 }
 
-void identitas(int matriks[100][100], int panjang, int lebar) {
-    for (int i = 0; i < panjang; i++) {
-        for (int j = 0; j < lebar; j++) {
-            if (i == j) {
-                matriks[i][j] = 1;
-            } else {
-                matriks[i][j] = 0;
-            }
-            printf("%d\t", matriks[i][j]);
+// Fungsi untuk membentuk matriks identitas
+void identityMatrix(int size, int result[MAX_SIZE][MAX_SIZE]) {
+    // Inisialisasi semua elemen dengan nol
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            result[i][j] = (i == j) ? 1 : 0;
         }
-        printf("\n");
     }
 }
